@@ -5,6 +5,42 @@ import InputControl from '../InputControl/InputControl';
 function Editor(props) {
     const sections = props.sections;
     const [activeSectionKey, setActiveSectionKey] = useState(Object.keys(sections)[0]);
+
+    const basicInfoBody = (
+        <div className={styles.detail}>
+            <div className={styles.row}>
+                <InputControl
+                    label="Name"
+                    placeholder="Enter your name eg. Mohsin Ali"
+                />
+                <InputControl
+                    label="Title"
+                    placeholder="Enter your title eg.Frontend Developer"
+                />
+            </div>
+            <div className={styles.row}>
+                <InputControl
+                    label="Linkedin Link"
+                    placeholder="Enter your linkedin profile link"
+                />
+                <InputControl
+                    label="Github Link"
+                    placeholder="Enter your github profile link"
+                />
+            </div>
+            <div className={styles.row}>
+                <InputControl
+                    label="Email"
+                    placeholder="Enter your email"
+                />
+                <InputControl
+                    label="Enter phone number"
+                    placeholder="Enter your phone number"
+                />
+            </div>
+        </div>
+    );
+
     const workExpBody = (
         <div className={styles.details}>
             <div className={styles.row}>
@@ -63,7 +99,7 @@ function Editor(props) {
             <div className={styles.row}>
                 <InputControl
                     label="Deployed Link"
-                    placeholder="Enter eployed link of project"
+                    placeholder="Enter deployed link of project"
                 />
                 <InputControl
                     label="Github Link"
@@ -105,8 +141,59 @@ function Editor(props) {
                 />
             </div>
         </div>
-    )
-    const generateBody = () => { };
+    );
+
+    const achievementsBody = (
+        <div className={styles.detail}>
+            <div className={styles.column}>
+                <label>List your achievements</label>
+                <InputControl placeholder="Line 1" />
+                <InputControl placeholder="Line 2" />
+                <InputControl placeholder="Line 3" />
+                <InputControl placeholder="Line 4" />
+            </div>
+        </div>
+    );
+
+    const summaryBody = (
+        <div className={styles.detail}>
+            <InputControl
+                label="Summary"
+                placeholder="Enter your objective/summary"
+            />
+        </div>
+    );
+
+    const otherBody = (
+        <div className={styles.detail}>
+            <InputControl
+                label="Other"
+                placeholder="Enter something"
+            />
+        </div>
+    );
+
+    const generateBody = () => {
+        switch (sections[activeSectionKey]) {
+            case sections.basicInfo:
+                return basicInfoBody;
+            case sections.workExp:
+                return workExpBody;
+            case sections.project:
+                return projectBody;
+            case sections.education:
+                return educationBody;
+            case sections.achievement:
+                return achievementsBody;
+            case sections.summary:
+                return summaryBody;
+            case sections.other:
+                return otherBody;
+            default: return null;
+        }
+    };
+
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -122,6 +209,7 @@ function Editor(props) {
             </div>
             <div className={styles.body}>
                 <InputControl label="Title" placeholder="Enter section Title" />
+                {generateBody()}
             </div>
         </div>
     )

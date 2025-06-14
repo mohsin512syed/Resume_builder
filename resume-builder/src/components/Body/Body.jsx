@@ -9,8 +9,8 @@ function Body() {
     basicInfo: "Basic Info",
     workExp: "Work Experience",
     project: "Projects",
-    eductaion: "Education",
-    achievements: "Achievements",
+    education: "Education",
+    achievement: "Achievements",
     summary: "Summary",
     other: "Other"
   }
