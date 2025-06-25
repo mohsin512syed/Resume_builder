@@ -1,10 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Editor.module.css'
+import { X } from 'lucide-react';
 import InputControl from '../InputControl/InputControl';
 
 function Editor(props) {
     const sections = props.sections;
+    const information = props.information;
+
+
     const [activeSectionKey, setActiveSectionKey] = useState(Object.keys(sections)[0]);
+    const [activeInformation, setActiveInformation] = useState(information[sections[Object.keys(sections)[0]]]);
+    const [sectionTitle, setSectionTitle] = useState(sections[Object.keys(sections)[0]]);
+    const [values, setValues] = useState({
+        name: activeInformation?.detail?.name||"",
+        title: activeInformation?.detail?.title||"",
+        linkedin: activeInformation?.detail?.linkedin||"",
+        github: activeInformation?.detail?.github||"",
+        phone: activeInformation?.detail?.phone||"",
+        email: activeInformation?.detail?.email||"",
+    })
 
     const basicInfoBody = (
         <div className={styles.detail}>
@@ -42,25 +56,29 @@ function Editor(props) {
     );
 
     const workExpBody = (
-        <div className={styles.details}>
+        <div className={styles.detail}>
             <div className={styles.row}>
                 <InputControl
                     label="Title"
                     placeholder="Enter title eg .Frontend developer"
+                    defaultValue={values.title}
                 />
                 <InputControl
                     label="Company name"
                     placeholder="Enter company name eg. amazon"
+                    defaultValue={values.companyName}
                 />
             </div>
             <div className={styles.row}>
                 <InputControl
                     label="Certificate link"
                     placeholder="Enter Certificate link"
+                    defaultValue={values.certificationLink}
                 />
                 <InputControl
                     label="Enter location"
                     placeholder="Enter location eg. Remote"
+                    defaultValue={values.location}
                 />
             </div>
             <div className={styles.row}>
@@ -68,25 +86,36 @@ function Editor(props) {
                     label="Start Date"
                     type="date"
                     placeholder="Enter start date of work"
+                    defaultValue={values.startDate}
                 />
                 <InputControl
                     label="End date"
                     type="date"
                     placeholder="Enter end date of work"
+                    defaultValue={values.endDate}
                 />
             </div>
 
             <div className={styles.column}>
                 <label>Enter work description</label>
-                <InputControl placeholder="Line 1" />
-                <InputControl placeholder="Line 2" />
-                <InputControl placeholder="Line 3" />
+                <InputControl 
+                placeholder="Line 1"
+                defaultValue={values.points? values.points[0]:""}
+                />
+                <InputControl
+                placeholder="Line 2"
+                defaultValue={values.points? values.points[1]:""}
+                />
+                <InputControl
+                placeholder="Line 3"
+                defaultValue={values.points? values.points[2]:""}
+                />
             </div>
         </div>
     );
 
     const projectBody = (
-        <div className={styles.details}>
+        <div className={styles.detail}>
             <div className={styles.row}>
                 <InputControl
                     label="Title"
@@ -173,6 +202,11 @@ function Editor(props) {
         </div>
     );
 
+    useEffect(() => {
+        setActiveInformation(information[sections[activeSectionKey]]);
+        setSectionTitle(sections[activeSectionKey]);
+    }, [activeSectionKey])
+
     const generateBody = () => {
         switch (sections[activeSectionKey]) {
             case sections.basicInfo:
@@ -208,8 +242,30 @@ function Editor(props) {
                 }
             </div>
             <div className={styles.body}>
-                <InputControl label="Title" placeholder="Enter section Title" />
+                <InputControl
+                    label="Title"
+                    placeholder="Enter section Title"
+                    value={sectionTitle}
+                    onChange={(event) => setSectionTitle(event.target.value)}
+                />
+
+                <div className={styles.chips}>
+
+                    {
+                        activeInformation?.details ? activeInformation?.details?.map((item, index) => (
+                            <div className={styles.chip} key={item.sectionTitle + index}>
+                                <p> {sections[activeSectionKey]} {index + 1}</p>
+                                <X />
+                            </div>
+                        )) : ""
+                    }
+
+
+                </div>
+
                 {generateBody()}
+
+                <button>Save</button>
             </div>
         </div>
     )

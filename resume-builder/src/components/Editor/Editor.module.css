@@ -34,12 +34,13 @@
     flex-direction: column;
     gap: 20px;
     padding: 30px;
+    padding-top: 0;
 }
 
 .detail {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 15px;
 }
 
 .detail .row {
@@ -55,4 +56,55 @@
 
 .detail .row>div {
     flex: 1;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.chip {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 4px 8px;
+    background-color: #808080;
+    border-radius: 20px;
+}
+
+.chip p {
+    font-weight: 500;
+    line-height: 1.25rem;
+    color: #fff;
+}
+
+.chip svg {
+    color: #fff;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+}
+
+.chip .active {
+    background-color: #239ce2;
+}
+
+.body button {
+    width: fit-content;
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: #239ce2;
+    color: #fff;
+    outline: none;
+    border: none;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 200ms;
+}
+
+.body button:active {
+    transform: translateY(2px);
 }
