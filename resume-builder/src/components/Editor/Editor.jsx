@@ -12,13 +12,23 @@ function Editor(props) {
     const [activeInformation, setActiveInformation] = useState(information[sections[Object.keys(sections)[0]]]);
     const [sectionTitle, setSectionTitle] = useState(sections[Object.keys(sections)[0]]);
     const [values, setValues] = useState({
-        name: activeInformation?.detail?.name||"",
-        title: activeInformation?.detail?.title||"",
-        linkedin: activeInformation?.detail?.linkedin||"",
-        github: activeInformation?.detail?.github||"",
-        phone: activeInformation?.detail?.phone||"",
-        email: activeInformation?.detail?.email||"",
+        name: activeInformation?.detail?.name || "",
+        title: activeInformation?.detail?.title || "",
+        linkedin: activeInformation?.detail?.linkedin || "",
+        github: activeInformation?.detail?.github || "",
+        phone: activeInformation?.detail?.phone || "",
+        email: activeInformation?.detail?.email || "",
     })
+
+    const handlePointUpdate = (value, index) => {
+        const tempValues = { ...values }
+        tempValues.points[index] = value
+        setValues(tempValues)
+    }
+
+    const handleSubmission = () => {
+        console.log(values)
+    }
 
     const basicInfoBody = (
         <div className={styles.detail}>
@@ -26,30 +36,42 @@ function Editor(props) {
                 <InputControl
                     label="Name"
                     placeholder="Enter your name eg. Mohsin Ali"
+                    defaultValue={values.name}
+                    onChange={(event) => setValues((prev) => ({ ...prev, name: event.target.value }))}
                 />
                 <InputControl
                     label="Title"
                     placeholder="Enter your title eg.Frontend Developer"
+                    defaultValue={values.title}
+                    onChange={(event) => setValues((prev) => ({ ...prev, title: event.target.value }))}
                 />
             </div>
             <div className={styles.row}>
                 <InputControl
                     label="Linkedin Link"
                     placeholder="Enter your linkedin profile link"
+                    defaultValue={values.linkedin}
+                    onChange={(event) => setValues((prev) => ({ ...prev, linkedin: event.target.value }))}
                 />
                 <InputControl
                     label="Github Link"
                     placeholder="Enter your github profile link"
+                    defaultValue={values.github}
+                    onChange={(event) => setValues((prev) => ({ ...prev, gihub: event.target.value }))}
                 />
             </div>
             <div className={styles.row}>
                 <InputControl
                     label="Email"
                     placeholder="Enter your email"
+                    defaultValue={values.email}
+                    onChange={(event) => setValues((prev) => ({ ...prev, email: event.target.value }))}
                 />
                 <InputControl
                     label="Enter phone number"
                     placeholder="Enter your phone number"
+                    defaultValue={values.phone}
+                    onChange={(event) => setValues((prev) => ({ ...prev, phone: event.target.value }))}
                 />
             </div>
         </div>
@@ -62,11 +84,13 @@ function Editor(props) {
                     label="Title"
                     placeholder="Enter title eg .Frontend developer"
                     defaultValue={values.title}
+                    onChange={(event) => setValues((prev) => ({ ...prev, title: event.title.value }))}
                 />
                 <InputControl
                     label="Company name"
                     placeholder="Enter company name eg. amazon"
                     defaultValue={values.companyName}
+                    onChange={(event) => setValues((prev) => ({ ...prev, companyName: event.target.value }))}
                 />
             </div>
             <div className={styles.row}>
@@ -74,11 +98,13 @@ function Editor(props) {
                     label="Certificate link"
                     placeholder="Enter Certificate link"
                     defaultValue={values.certificationLink}
+                    onChange={(event) => setValues((prev) => ({ ...prev, certificationLink: event.target.value }))}
                 />
                 <InputControl
                     label="Enter location"
                     placeholder="Enter location eg. Remote"
                     defaultValue={values.location}
+                    onChange={(event) => setValues((prev) => ({ ...prev, location: event.target.value }))}
                 />
             </div>
             <div className={styles.row}>
@@ -87,28 +113,33 @@ function Editor(props) {
                     type="date"
                     placeholder="Enter start date of work"
                     defaultValue={values.startDate}
+                    onChange={(event) => setValues((prev) => ({ ...prev, startDate: event.target.value }))}
                 />
                 <InputControl
                     label="End date"
                     type="date"
                     placeholder="Enter end date of work"
                     defaultValue={values.endDate}
+                    onChange={(event) => setValues((prev) => ({ ...prev, endDate: event.target.value }))}
                 />
             </div>
 
             <div className={styles.column}>
                 <label>Enter work description</label>
-                <InputControl 
-                placeholder="Line 1"
-                defaultValue={values.points? values.points[0]:""}
+                <InputControl
+                    placeholder="Line 1"
+                    defaultValue={values.points ? values.points[0] : ""}
+                    onChange={(event) => handlePointUpdate(event.target.value, 0)}
                 />
                 <InputControl
-                placeholder="Line 2"
-                defaultValue={values.points? values.points[1]:""}
+                    placeholder="Line 2"
+                    defaultValue={values.points ? values.points[1] : ""}
+                    onChange={(event) => handlePointUpdate(event.target.value, 1)}
                 />
                 <InputControl
-                placeholder="Line 3"
-                defaultValue={values.points? values.points[2]:""}
+                    placeholder="Line 3"
+                    defaultValue={values.points ? values.points[2] : ""}
+                    onChange={(event) => handlePointUpdate(event.target.value, 2)}
                 />
             </div>
         </div>
@@ -119,29 +150,51 @@ function Editor(props) {
             <div className={styles.row}>
                 <InputControl
                     label="Title"
-                    placeholder="Enter title eg.chat app" />
+                    placeholder="Enter title eg.chat app"
+                    defaultValue={values.title}
+                    onChange={(event) => setValues((prev) => ({ ...prev, title: event.target.value }))}
+                />
+
             </div>
             <InputControl
                 label="Overwiew"
                 placeholder="Enter basic overview of project"
+                defaultValue={values.overview}
+                onChange={(event) => setValues((prev) => ({ ...prev, overview: event.target.value }))}
             />
             <div className={styles.row}>
                 <InputControl
                     label="Deployed Link"
                     placeholder="Enter deployed link of project"
+                    defaultValue={values.link}
+                    onChange={(event) => setValues((prev) => ({ ...prev, link: event.target.value }))}
                 />
                 <InputControl
                     label="Github Link"
                     placeholder="Enter github link project"
+                    defaultValue={values.github}
+                    onChange={(event) => setValues((prev) => ({ ...prev, github: event.target.value }))}
                 />
             </div>
 
             <div className={styles.column}>
                 <label>Enter project descroption</label>
-                <InputControl placeholder="Line 1" />
-                <InputControl placeholder="Line 2" />
-                <InputControl placeholder="Line 3" />
-                <InputControl placeholder="Line 4" />
+                <InputControl placeholder="Line 1"
+                    defaultValue={values.points ? values.points[0] : ""}
+                    onChange={(event) => handlePointUpdate(event.target.value, 0)}
+                />
+                <InputControl placeholder="Line 2"
+                    defaultValue={values.points ? values.points[1] : ""}
+                    onChange={(event) => handlePointUpdate(event.target.value, 1)}
+                />
+                <InputControl placeholder="Line 3"
+                    defaultValue={values.points ? values.points[2] : ""}
+                    onChange={(event) => handlePointUpdate(event.target.value, 2)}
+                />
+                <InputControl placeholder="Line 4"
+                    defaultValue={values.points ? values.points[3] : ""}
+                    onChange={(event) => handlePointUpdate(event.target.value, 3)}
+                />
             </div>
         </div>
     );
@@ -151,22 +204,31 @@ function Editor(props) {
             <div className={styles.row}>
                 <InputControl
                     label="Title"
-                    placeholder="Enter your title eg,BS.CD/BS.IT" />
+                    placeholder="Enter your title eg,BS.CD/BS.IT"
+                    defaultValue={values.title}
+                    onChange={(event) => setValues((prev) => ({ ...prev, title: event.target.value }))}
+                />
             </div>
             <InputControl
                 label="College/School Name"
                 placeholder="Enter name of your college/student"
+                defaultValue={values.college}
+                onChange={(event) => setValues((prev) => ({ ...prev, college: event.target.value }))}
             />
             <div className={styles.row}>
                 <InputControl
                     label="Start Date"
                     type="date"
                     placeholder="Enter start date of this education"
+                    defaultValue={values.startDate}
+                    onChange={(event) => setValues((prev) => ({ ...prev, startDate: event.target.value }))}
                 />
                 <InputControl
                     label="End Date"
                     type="date"
                     placeholder="Enter end date of this education"
+                    defaultValue={values.endDate}
+                    onChange={(event) => setValues((prev) => ({ ...prev, endDate: event.target.value }))}
                 />
             </div>
         </div>
@@ -176,10 +238,22 @@ function Editor(props) {
         <div className={styles.detail}>
             <div className={styles.column}>
                 <label>List your achievements</label>
-                <InputControl placeholder="Line 1" />
-                <InputControl placeholder="Line 2" />
-                <InputControl placeholder="Line 3" />
-                <InputControl placeholder="Line 4" />
+                <InputControl placeholder="Line 1"
+                    defaultValue={values.points ? values.points[0] : ""}
+                    onChange={(event) => handlePointUpdate(event.value.target, 0)}
+                />
+                <InputControl placeholder="Line 2"
+                    defaultValue={values.points ? values.points[1] : ""}
+                    onChange={(event) => handlePointUpdate(event.value.target, 1)}
+                />
+                <InputControl placeholder="Line 3"
+                    defaultValue={values.points ? values.points[2] : ""}
+                    onChange={(event) => handlePointUpdate(event.value.target, 2)}
+                />
+                <InputControl placeholder="Line 4"
+                    defaultValue={values.points ? values.points[3] : ""}
+                    onChange={(event) => handlePointUpdate(event.value.target, 3)}
+                />
             </div>
         </div>
     );
@@ -189,6 +263,8 @@ function Editor(props) {
             <InputControl
                 label="Summary"
                 placeholder="Enter your objective/summary"
+                defaultValue={values.summary}
+                onChange={(event) => setValues((prev) => ({ ...prev, summary: event.target.value }))}
             />
         </div>
     );
@@ -198,14 +274,11 @@ function Editor(props) {
             <InputControl
                 label="Other"
                 placeholder="Enter something"
+                defaultValue={values.other}
+                onChange={(event) => setValues((prev) => ({ ...prev, other: event.target.value }))}
             />
         </div>
     );
-
-    useEffect(() => {
-        setActiveInformation(information[sections[activeSectionKey]]);
-        setSectionTitle(sections[activeSectionKey]);
-    }, [activeSectionKey])
 
     const generateBody = () => {
         switch (sections[activeSectionKey]) {
@@ -227,6 +300,26 @@ function Editor(props) {
         }
     };
 
+    useEffect(() => {
+        const activeInfo = information[sections[activeSectionKey]];
+        setActiveInformation(activeInfo);
+        setSectionTitle(sections[activeSectionKey]);
+        setValues({
+            name: activeInfo?.detail?.name || "",
+            overview: activeInfo?.details ? activeInfo?.details[0]?.overview || "" : "",
+            link: activeInfo?.details ? activeInfo?.details[0]?.link || "" : "",
+            certificationLink: activeInfo?.details ? activeInfo?.details[0]?.certificationLink || "" : "",
+            startDate: activeInfo?.details ? activeInfo?.details[0]?.startDate || "" : "",
+            endDate: activeInfo?.details ? activeInfo?.details[0]?.endDate || "" : "",
+            points: activeInfo?.details ? activeInfo.details[0]?.points ? [...activeInfo.details[0].points] : "" : activeInfo?.points ? [...activeInfo.points] : "",
+            title: activeInfo?.details? activeInfo?.details[0]?.title || "" : activeInfo?.detail?.title || "",
+            linkedin: activeInfo?.detail?.linkedin || "",
+            github:activeInfo?.details? activeInfo?.details[0]?.github || "" : activeInfo?.detail?.github || "",
+            phone: activeInfo?.detail?.phone || "",
+            email: activeInfo?.detail?.email || "",
+        })
+
+    },[activeSectionKey])
 
     return (
         <div className={styles.container}>
@@ -265,7 +358,7 @@ function Editor(props) {
 
                 {generateBody()}
 
-                <button>Save</button>
+                <button onClick={handleSubmission()}>Save</button>
             </div>
         </div>
     )
