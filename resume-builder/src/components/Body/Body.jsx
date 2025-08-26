@@ -70,7 +70,8 @@ function Body() {
         <button>Download <ArrowDown /> </button>
       </div>
       <div className={styles.main}>
-        <Editor sections={sections} information={resumeInformation} />
+        <Editor sections={sections} information={resumeInformation} 
+        setResumeInformation={setResumeInformation}/>
       </div>
     </div>
   )

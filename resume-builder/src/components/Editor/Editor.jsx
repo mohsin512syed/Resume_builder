@@ -11,6 +11,7 @@ function Editor(props) {
     const [activeSectionKey, setActiveSectionKey] = useState(Object.keys(sections)[0]);
     const [activeInformation, setActiveInformation] = useState(information[sections[Object.keys(sections)[0]]]);
     const [sectionTitle, setSectionTitle] = useState(sections[Object.keys(sections)[0]]);
+    const [activeDetailIndex, setActiveDetailIndex] = useState(0);
     const [values, setValues] = useState({
         name: activeInformation?.detail?.name || "",
         title: activeInformation?.detail?.title || "",
@@ -24,10 +25,6 @@ function Editor(props) {
         const tempValues = { ...values }
         tempValues.points[index] = value
         setValues(tempValues)
-    }
-
-    const handleSubmission = () => {
-        console.log(values)
     }
 
     const basicInfoBody = (
@@ -300,26 +297,160 @@ function Editor(props) {
         }
     };
 
+    const handleSubmission = () => {
+        switch (sections[activeSectionKey]) {
+
+            case sections.basicInfo: {
+                const tempDetail = {
+                    name: values.name,
+                    title: values.title,
+                    linkedin: values.linkedin,
+                    github: values.github,
+                    email: values.email,
+                    phone: values.phone
+                };
+                props.setResumeInformation((prev) => ({
+                    ...prev,
+                    [sections.basicInfo]: {
+                        ...prev[sections.basicInfo],
+                        detail: tempDetail,
+                        sectionTitle,
+                    },
+                }))
+                break;
+            }
+
+            case sections.workExp: {
+                const tempDetail = {
+                    certificationLink: values.certificationLink,
+                    title: values.title,
+                    startDate: values.startDate,
+                    endDate: values.endDate,
+                    companyName: values.companyName,
+                    location: values.companyName,
+                    points: values.points
+                };
+
+                const tempDetails = [...information[sections.workExp]?.details];
+                tempDetails[activeDetailIndex] = tempDetail;
+
+                props.setResumeInformation((prev) => ({
+                    ...prev,
+                    [sections.workExp]: {
+                        ...prev[sections.workExp],
+                        details: tempDetails,
+                        sectionTitle,
+                    }
+                }))
+                break;
+            }
+
+            case sections.project: {
+                const tempDetail = {
+                    link: values.link,
+                    title: values.title,
+                    overview: values.overview,
+                    github: values.github,
+                    points: values.points
+                };
+
+                const tempDetails = [...information[sections.project]?.details]
+                tempDetails[activeDetailIndex] = tempDetail
+
+                props.setResumeInformation((prev) => ({
+                    ...prev,
+                    [sections.project]: {
+                        ...[sections.project],
+                        details: tempDetails,
+                        sectionTitle,
+                    },
+                }))
+                break;
+            }
+
+            case sections.education: {
+                const tempDetail = {
+                    title: values.title,
+                    college: values.college,
+                    startDate: values.startDate,
+                    endDate: values.endDate,
+                };
+                const tempDetails = [...information[sections.information]?.details]
+                tempDetails[activeDetailIndex] = tempDetail
+
+                props.setResumeInformation((prev) => ({
+                    ...prev,
+                    [sections.education]: {
+                        ...[sections.education],
+                        details: tempDetails,
+                        sectionTitle,
+                    },
+                }))
+                break;
+            }
+
+            case sections.achievement: {
+                const tempPoints = values.points;
+
+                props.setResumeInformation((prev) => ({
+                    ...prev,
+                    [sections.achievement]: {
+                        ...[sections.achievement],
+                        points: tempPoints,
+                        sectionTitle,
+                    },
+                }))
+                break;
+            }
+
+            case sections.summmary: {
+                const tempDetail = values.summary;
+
+                props.setResumeInformation((prev) => ({
+                    ...prev,
+                    [sections.summary]: {
+                        ...[sections.summary],
+                        detail: tempDetail,
+                        sectionTitle,
+                    },
+                }))
+                break;
+            }
+
+            case sections.other:{
+                const tempDetail=values.other;
+                break;
+            }
+
+               
+        }
+    }
+
     useEffect(() => {
         const activeInfo = information[sections[activeSectionKey]];
         setActiveInformation(activeInfo);
         setSectionTitle(sections[activeSectionKey]);
+        setActiveDetailIndex(0);
         setValues({
             name: activeInfo?.detail?.name || "",
             overview: activeInfo?.details ? activeInfo?.details[0]?.overview || "" : "",
             link: activeInfo?.details ? activeInfo?.details[0]?.link || "" : "",
             certificationLink: activeInfo?.details ? activeInfo?.details[0]?.certificationLink || "" : "",
+            companyName: activeInfo?.details ? activeInfo?.details[0]?.companyName || "" : "",
+            location: activeInfo?.details ? activeInfo?.details[0]?.location || "" : "",
             startDate: activeInfo?.details ? activeInfo?.details[0]?.startDate || "" : "",
             endDate: activeInfo?.details ? activeInfo?.details[0]?.endDate || "" : "",
             points: activeInfo?.details ? activeInfo.details[0]?.points ? [...activeInfo.details[0].points] : "" : activeInfo?.points ? [...activeInfo.points] : "",
-            title: activeInfo?.details? activeInfo?.details[0]?.title || "" : activeInfo?.detail?.title || "",
+            title: activeInfo?.details ? activeInfo?.details[0]?.title || "" : activeInfo?.detail?.title || "",
             linkedin: activeInfo?.detail?.linkedin || "",
-            github:activeInfo?.details? activeInfo?.details[0]?.github || "" : activeInfo?.detail?.github || "",
+            github: activeInfo?.details ? activeInfo?.details[0]?.github || "" : activeInfo?.detail?.github || "",
             phone: activeInfo?.detail?.phone || "",
             email: activeInfo?.detail?.email || "",
+            summary:activeInfo?.detail?.summary||"",
+            other:activeInfo?.detail?.other||"",
         })
 
-    },[activeSectionKey])
+    }, [activeSectionKey, information, sections])
 
     return (
         <div className={styles.container}>
@@ -346,7 +477,10 @@ function Editor(props) {
 
                     {
                         activeInformation?.details ? activeInformation?.details?.map((item, index) => (
-                            <div className={styles.chip} key={item.sectionTitle + index}>
+                            <div className={`${styles.chip} ${activeDetailIndex === index ? styles.active : ""}`}
+                                key={item.title + index}
+                                onClick={() => setActiveDetailIndex(index)}
+                            >
                                 <p> {sections[activeSectionKey]} {index + 1}</p>
                                 <X />
                             </div>
@@ -358,7 +492,7 @@ function Editor(props) {
 
                 {generateBody()}
 
-                <button onClick={handleSubmission()}>Save</button>
+                <button onClick={handleSubmission}>Save</button>
             </div>
         </div>
     )
